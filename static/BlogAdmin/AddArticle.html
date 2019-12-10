@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+</head>
+
+<body>
+    <label class="col-sm-1 control-label no-padding-right">文章详情</label>
+    <div class="col-sm-10">
+        <script name="content" id="editor" type="text/plain" style="width:600px;height:300px;"></script>
+    </div>
+    <div id="app">
+        <h1>App</h1>
+        <div>
+            <input type="text" v-model="user_id" placeholder="填写id" />
+            <input type="text" v-model="category" placeholder="填写文章分类" />
+            <input type="text" v-model="title" placeholder="填写文章题目" />
+            <input type="text" v-model="data" placeholder="填写文章发布日期" />
+            <button @click="getAllHtml()">获得整个html的内容</button>
+            <button @click="getContent()">获得内容</button>
+            <textarea type="text" v-model="content" placeholder="填写文章内容"></textarea>
+            <button @click="add">添加新任务</button>
+            <button @click='zhuce'>注册</button>
+        </div>
+    </div>
+
+    <script type="text/javascript" charset="utf-8" src="./ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ueditor/ueditor.all.min.js">
+    </script>
+    <script type="text/javascript" charset="utf-8" src="./ueditor/lang/zh-cn/zh-cn.js"></script>
+
+    <script>
+        var ueditor = UE.getEditor('editor');
+        // 注意 UEditor 准备好之后才可以使用 
+        ueditor.addListener("ready", function() {
+            // 设置内容
+            // ueditor.setContent(`{{@list.content}}`);
+        })
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                user_id: '',
+                category: '',
+                title: '',
+                data: '',
+                content: '',
+                list: [],
+                page: 1,
+                prepage: 4,
+                pages: 0,
+                type: 0,
+                id: 1,
+                username: 1113,
+                password: 1112
+            },
+            created() {
+                // this.getData();
+                // this.getDetail();
+                // this.denglu();
+            },
+            methods: {
+                // zhuce() {
+                //     fetch('/regist', {
+                //         method: 'post',
+                //         headers: {
+                //             'Content-Type': 'application/json'
+                //         },
+                //         body: JSON.stringify({
+                //             username: this.username,
+                //             password: this.password,
+                //         })
+                //     }).then(res => {
+                //         return res.json();
+                //     }).then(data => {
+                //         console.log(data)
+                //     })
+                // },
+                // denglu() {
+                //     fetch('/login', {
+                //         method: 'post',
+                //         headers: {
+                //             'Content-Type': 'application/json'
+                //         },
+                //         body: JSON.stringify({
+                //             username: this.username,
+                //             password: this.password,
+                //         })
+                //     }).then(res => {
+                //         return res.json();
+                //     }).then(data => {
+                //         console.log(data)
+                //     })
+                // },
+                // getDetail() {
+                //     fetch('/SelectArticleOne?id=' + this.id).then(res => {
+                //         return res.json();
+                //     }).then(data => {
+                //         console.log(data)
+                //     });
+                // },
+                // getData() {
+                //     fetch('/SelectArticle').then(res => {
+                //         return res.json();
+                //         console.log(res)
+                //     }).then(data => {
+                //         console.log(data)
+                //             // this.list = data.data;
+                //     });
+                // },
+                // getData() {
+                //     fetch('/SelectArticle?type=' + this.type + '&page=' + this.page + '&prepage=' + this.prepage).then(res => {
+                //         return res.json();
+                //     }).then(data => {
+                //         console.log(data)
+                //             // this.todos = data.data.todos;
+                //             // this.pages = data.data.pages;
+                //     });
+                // },
+                // changePage(n) {
+                //     this.page = n;
+                //     this.getData();
+                // },
+                // changeType(m) {
+                //     this.type = m;
+                //     this.getData();
+                // },
+                add() {
+                    fetch('/AddArticle', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user_id: this.user_id,
+                            category: this.category,
+                            title: this.title,
+                            data: this.data,
+                            content: this.content,
+
+                        })
+                    }).then(res => {
+                        console.log(res)
+                        return res.json();
+                    }).then(data => {
+                        if (!data.code) {
+                            console.log(data)
+                        }
+                    })
+                },
+                getAllHtml() {
+                    alert(UE.getEditor('editor').getAllHtml())
+                },
+                getContent() {
+                    var arr = [];
+                    arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+                    arr.push("内容为：");
+                    arr.push(UE.getEditor('editor').getContent());
+                    alert(arr.join("\n"));
+                },
+                // toggle(id, todo) {
+                //     fetch('/toggle', {
+                //         method: 'post',
+                //         headers: {
+                //             'Content-Type': 'application/json'
+                //         },
+                //         body: JSON.stringify({
+                //             id,
+                //             todo: Number(1)
+                //         })
+                //     }).then(res => {
+                //         return res.json();
+                //     }).then(data => {
+                //         if (!data.code) {
+                //             this.getData();
+                //         }
+                //     });
+                // },
+                remove(id) {
+                    fetch('/remove', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id
+                        })
+                    }).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        if (!data.code) {
+                            this.getData();
+                        }
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"></script>
+    <style>
+        li {
+            line-height: 40px;
+        }
+        
+        .done span {
+            text-decoration: line-through;
+            color: #cccccc;
+        }
+        
+        .pages {
+            margin: 10px;
+        }
+        
+        .pages a {
+            margin: 15px;
+        }
+        
+        .pages a.active {
+            color: red;
+        }
+        
+        .footer {
+            margin: 10px;
+        }
+        
+        .footer button.active {
+            background: yellow;
+        }
+        
+        input {
+            margin: 30rpx;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>App</h1>
+        <h2>测试页面</h2>
+        <div>
+            <input type="text" v-model="user_id" placeholder="填写id" />
+            <input type="text" v-model="category" placeholder="填写文章分类" />
+            <input type="text" v-model="title" placeholder="填写文章题目" />
+            <input type="text" v-model="data" placeholder="填写文章发布日期" />
+            <textarea type="text" v-model="content" placeholder="填写文章内容"></textarea>
+            <button @click="add">添加新任务</button>
+            <button @click='zhuce'>注册</button>
+            <input type="file" ref="file" accept="image/png,image/gif,image/jpeg" @change="updata" />
+            <!-- <button @click="getFile">提交</button> -->
+            <div class="picture">
+                <img :src="this.picture" alt="">
+            </div>
+        </div>
+        <div>
+            <input type="text" v-model="article_id" placeholder="评论文章的id">
+            <input type="text" v-model="com_content" placeholder="评论内容">
+            <button @click="Upcomment">提交评论</button>
+        </div>
+        <div>
+            <div>当前文章id：{{this.id}}</div>
+            <button @click="delectComent">删除一条评论</button>
+        </div>
+        <div>
+            <h4>添加留言</h4>
+            <input type="text" v-model="levaingMsg" placeholder="填写留言">
+            <button @click="UpleavingMsg">发布留言</button>
+        </div>
+        <div>
+            <div>删除留言：{{this.id}}</div>
+            <button @click="delectLeavingMsg">删除一条留言</button>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                levaingMsg: '',
+                article_id: '',
+                com_content: '',
+                picture: '',
+                user_id: '',
+                category: '',
+                title: '',
+                data: '',
+                content: '',
+                list: [],
+                page: 1,
+                prepage: 4,
+                pages: 1,
+                type: 1,
+                id: 1,
+                username: 1113,
+                password: 1112
+            },
+            created() {
+                this.getData();
+                this.getDetail();
+                this.denglu();
+                this.getLeavingMsg();
+                this.getComment();
+            },
+            methods: {
+                getLeavingMsg() {
+                    fetch('/SelectLeavingMsg', {
+                        method: 'get',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                    })
+                },
+                delectLeavingMsg() {
+                    fetch('/DelectLevaingMsg', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: this.id
+                        })
+                    }).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                    })
+                },
+                UpleavingMsg() {
+                    fetch('/AddLevaingMsg', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            content: this.levaingMsg
+                        })
+                    }).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                    })
+                },
+                delectComent() {
+                    fetch('/DelectComment', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: this.id,
+                        })
+                    }).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                    })
+                },
+                getComment() {
+                    fetch('/SelectComment?article_id=' + this.id).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                    });
+                },
+                Upcomment() {
+                    fetch('/AddComment', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            article_id: this.article_id,
+                            content: this.com_content
+                        })
+                    }).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                    })
+                },
+                updata(e) {
+                    console.log(e)
+                    let file = e.target.files[0];
+                    let param = new FormData(); //创建form对象
+                    param.append('file', file); //通过append向form对象添加数据
+                    console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+                    // let config = {
+                    //     headers: {
+                    //         'Content-Type': 'multipart/form-data'
+                    //     }
+                    // }; 
+                    //添加请求头
+                    // axios.post('/upload', param, config)
+                    //     .then(response => {
+                    //         console.log(response.data);
+                    //     });
+                    if (param) {
+                        fetch('/upload', {
+                            method: 'post',
+                            body: param
+                        }).then(res => {
+                            return res.json();
+                        }).then(data => {
+                            console.log(data)
+                            this.picture = data.filename
+                        })
+                    }
+                },
+                zhuce() {
+                    fetch('/regist', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            username: this.username,
+                            password: this.password,
+                        })
+                    }).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                    })
+                },
+                denglu() {
+                    fetch('/login', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            username: this.username,
+                            password: this.password,
+                        })
+                    }).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                    })
+                },
+                getDetail() {
+                    fetch('/SelectArticleOne?id=' + this.id).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                    });
+                },
+                // getData() {
+                //     fetch('/SelectArticle').then(res => {
+                //         return res.json();
+                //         console.log(res)
+                //     }).then(data => {
+                //         console.log(data)
+                //             // this.list = data.data;
+                //     });
+                // },
+                getData() {
+                    fetch('/SelectArticle?type=' + this.type + '&page=' + this.page + '&prepage=' + this.prepage).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        console.log(data)
+                            // this.todos = data.data.todos;
+                            // this.pages = data.data.pages;
+                    });
+                },
+                // changePage(n) {
+                //     this.page = n;
+                //     this.getData();
+                // },
+                // changeType(m) {
+                //     this.type = m;
+                //     this.getData();
+                // },
+                add() {
+                    fetch('/AddArticle', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user_id: this.user_id,
+                            category: this.category,
+                            title: this.title,
+                            content: this.content,
+                            picture: this.picture
+                        })
+                    }).then(res => {
+                        console.log(res)
+                        return res.json();
+                    }).then(data => {
+                        if (!data.code) {
+                            console.log(data)
+                        }
+                    }).catch(error => {
+                        let err = error.json()
+                        console.log(err)
+                    })
+                },
+                // toggle(id, todo) {
+                //     fetch('/toggle', {
+                //         method: 'post',
+                //         headers: {
+                //             'Content-Type': 'application/json'
+                //         },
+                //         body: JSON.stringify({
+                //             id,
+                //             todo: Number(1)
+                //         })
+                //     }).then(res => {
+                //         return res.json();
+                //     }).then(data => {
+                //         if (!data.code) {
+                //             this.getData();
+                //         }
+                //     });
+                // },
+                remove(id) {
+                    fetch('/remove', {
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id
+                        })
+                    }).then(res => {
+                        return res.json();
+                    }).then(data => {
+                        if (!data.code) {
+                            this.getData();
+                        }
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

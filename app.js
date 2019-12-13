@@ -41,7 +41,9 @@
         //修改文件名称
         filename: function(req, file, cb) {
             var fileFormat = (file.originalname).split("."); //以点分割成数组，数组的最后一项就是后缀名
-            cb(null, Date.now() + "." + fileFormat[fileFormat.length - 1]);
+            // cb(null, Date.now() + "." + fileFormat[fileFormat.length - 1]);     
+            cb(null, Date.now() + ".jpg");
+
         }
     });
     //加载配置
@@ -51,6 +53,22 @@
             filename: 'http://localhost:8080/img/' + ctx.req.file.filename //返回文件名
         }
     })
+    router.post('/Uploadimg', ctx => (req, res, next) => {
+        let imgData = ctx.request.body.imageUrl
+            // var base64Data = imgData.replace(/^data:image\/\w+;base64,/, '')
+        var dataBuffer = new Buffer(imgData, 'base64')
+        fs.writeFile(path.normalize(__dirname + "/" + "./img/") + "1" + ".jpg", dataBuffer, function(err) {
+            if (err) {
+                return
+            } else {
+                console.log('图片保存成功')
+                ctx.body = {
+                    code: 200
+                }
+            }
+        })
+        res.end('ok')
+    });
 
     //配置编辑器上传图片接口
     router.all('/ImgUpload',

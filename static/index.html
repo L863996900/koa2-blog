@@ -8,7 +8,15 @@
     <title>test</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"></script>
+    <script src="./js/exif.js"></script>
+    <script src="./js/png.js"></script>
+    <script src="./js/index.js" type="text/javascript"></script>
     <style>
+        img {
+            width: 100px;
+            height: 100px;
+        }
+        
         li {
             line-height: 40px;
         }
@@ -56,8 +64,10 @@
             <textarea type="text" v-model="content" placeholder="填写文章内容"></textarea>
             <button @click="add">添加新任务</button>
             <button @click='zhuce'>注册</button>
-            <input type="file" ref="file" accept="image/png,image/gif,image/jpeg" @change="updata" />
+            <input type="file" ref="file" accept="image/png,image/gif,image/jpeg" @change="fileUp" />
             <!-- <button @click="getFile">提交</button> -->
+            <!-- <input type="file" style="display: none" onchange="fileUp(this)" id="file-up">
+            <input type="button" value="点我上传图片" onclick="document.getElementById('file-up').click();" /> -->
             <div class="picture">
                 <img :src="this.picture" alt="">
             </div>
@@ -82,6 +92,51 @@
         </div>
     </div>
     <script>
+        // var fileUp = function(me) {
+        //     base64Image({
+        //         width: 750,
+        //         /*【选填】宽度默认750，如果图片尺寸大于该宽度，图片将被设置为该宽度*/
+        //         ratio: 0.75,
+        //         /*【选填】压缩率默认0.75 */
+        //         file: me,
+        //         /*【必填】对应的上传元素 */
+        //         callback: function(imageUrl) { /*【必填】处理成功后的回调函数 */
+        //             /*imageUrl为得到的图片base64数据，这里可以进行上传到服务器或者其他逻辑操作 */
+        //             // var img = new Image();
+        //             // img.src = imageUrl;
+        //             // document.getElementById("image-list").appendChild(img);
+        //             // console.log(img)
+        //             let blob = dataURLtoFile(imageUrl, 'image/jpeg');
+        //             // _that.submitPic(blob);
+        //             let param = new FormData(); //创建form对象
+        //             param.append('file', blob); //通过append向form对象添加数据
+        //             // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+        //             if (param) {
+        //                 fetch('http://localhost:8080/upload', {
+        //                     method: 'post',
+        //                     body: param
+        //                 }).then(res => {
+        //                     return res.json();
+        //                 }).then(data => {
+        //                     console.log(data)
+        //                     this.picture = data.filename
+        //                 })
+        //             }
+        //         },
+
+        //     });
+
+        //     function dataURLtoFile(dataURI, type) {
+        //         let binary = atob(dataURI.split(',')[1]);
+        //         let array = [];
+        //         for (let i = 0; i < binary.length; i++) {
+        //             array.push(binary.charCodeAt(i));
+        //         }
+        //         return new Blob([new Uint8Array(array)], {
+        //             type: type
+        //         });
+        //     };
+        // };
         var app = new Vue({
             el: '#app',
             data: {
@@ -298,12 +353,10 @@
                             picture: this.picture
                         })
                     }).then(res => {
-                        console.log(res)
+                        // console.log(res)
                         return res.json();
                     }).then(data => {
-                        if (!data.code) {
-                            console.log(data)
-                        }
+                        console.log(data)
                     }).catch(error => {
                         let err = error.json()
                         console.log(err)
@@ -343,6 +396,51 @@
                             this.getData();
                         }
                     });
+                },
+                fileUp(e) {
+                    base64Image({
+                        width: 750,
+                        /*【选填】宽度默认750，如果图片尺寸大于该宽度，图片将被设置为该宽度*/
+                        ratio: 0.75,
+                        /*【选填】压缩率默认0.75 */
+                        file: e,
+                        /*【必填】对应的上传元素 */
+                        callback: function(imageUrl) { /*【必填】处理成功后的回调函数 */
+                            /*imageUrl为得到的图片base64数据，这里可以进行上传到服务器或者其他逻辑操作 */
+                            // var img = new Image();
+                            // img.src = imageUrl;
+                            // document.getElementById("image-list").appendChild(img);
+                            // console.log(img)
+                            let blob = dataURLtoFile(imageUrl, 'image/jpeg');
+                            // _that.submitPic(blob);
+                            let param = new FormData(); //创建form对象
+                            param.append('file', blob); //通过append向form对象添加数据
+                            // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+                            if (param) {
+                                fetch('http://localhost:8080/upload', {
+                                    method: 'post',
+                                    body: param
+                                }).then(res => {
+                                    return res.json();
+                                }).then(data => {
+                                    console.log(data)
+                                    this.picture = data.filename
+                                })
+                            }
+                        },
+
+                    });
+
+                    function dataURLtoFile(dataURI, type) {
+                        let binary = atob(dataURI.split(',')[1]);
+                        let array = [];
+                        for (let i = 0; i < binary.length; i++) {
+                            array.push(binary.charCodeAt(i));
+                        }
+                        return new Blob([new Uint8Array(array)], {
+                            type: type
+                        });
+                    };
                 }
             }
         })

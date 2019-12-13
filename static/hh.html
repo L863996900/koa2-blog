@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+    <script src="./js/exif.js"></script>
+    <script src="./js/image.js"></script>
+</head>
+
+<body>
+    <form>
+        <input id="image" type="file" accept="*">
+    </form>
+    <div id="show"></div>
+</body>
+
+<script>
+    $(function() {
+        var async = {};
+        //处理图片后进行的操作，如上传
+        async.do = function() {
+            var imageData = $('#show>img')[0].src; //获取base64格式的图片
+            var imageData = imageData.replace(/data:image\/jpeg;base64,/, ''); //去掉"data:image/jpeg;base64,"
+            // //上传图片
+            // $.post('getImage.php', {
+            //     image: imageData,
+            //     lrj: 'hhh'
+            // }, function(data) {
+            //     console.log(data)
+            // })
+        };
+        var source = $('#image');
+        var show = $('#show')
+        imageProcess(source, show, async)
+    })
+</script>
+
+</html>

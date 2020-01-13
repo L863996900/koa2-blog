@@ -5,6 +5,7 @@
     const Bodyparser = require('koa-bodyparser');
     const fs = require('fs');
     const mysql = require('mysql2/promise');
+    // const mysql=require('mysql')
     const app = new koa();
     const multer = require('koa-multer')
     const ueditor = require('koa2-ueditor');
@@ -25,7 +26,7 @@
     const connection = await mysql.createConnection({
         host: '127.0.0.1',
         user: 'root',
-        password: '888888',
+        password: '863996900wm',
         database: 'blog'
     });
     //配置本地图片上传接口

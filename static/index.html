@@ -16,36 +16,36 @@
             width: 100px;
             height: 100px;
         }
-        
+
         li {
             line-height: 40px;
         }
-        
+
         .done span {
             text-decoration: line-through;
             color: #cccccc;
         }
-        
+
         .pages {
             margin: 10px;
         }
-        
+
         .pages a {
             margin: 15px;
         }
-        
+
         .pages a.active {
             color: red;
         }
-        
+
         .footer {
             margin: 10px;
         }
-        
+
         .footer button.active {
             background: yellow;
         }
-        
+
         input {
             margin: 30rpx;
         }
@@ -327,8 +327,8 @@
                         return res.json();
                     }).then(data => {
                         console.log(data)
-                            // this.todos = data.data.todos;
-                            // this.pages = data.data.pages;
+                        // this.todos = data.data.todos;
+                        // this.pages = data.data.pages;
                     });
                 },
                 // changePage(n) {
@@ -397,6 +397,16 @@
                         }
                     });
                 },
+                dataURLtoFile(dataURI, type) {
+                    let binary = atob(dataURI.split(',')[1]);
+                    let array = [];
+                    for (let i = 0; i < binary.length; i++) {
+                        array.push(binary.charCodeAt(i));
+                    }
+                    return new Blob([new Uint8Array(array)], {
+                        type: type
+                    });
+                },
                 fileUp(e) {
                     base64Image({
                         width: 750,
@@ -405,12 +415,12 @@
                         /*【选填】压缩率默认0.75 */
                         file: e,
                         /*【必填】对应的上传元素 */
-                        callback: function(imageUrl) { /*【必填】处理成功后的回调函数 */
+                        callback: function (imageUrl) { /*【必填】处理成功后的回调函数 */
                             /*imageUrl为得到的图片base64数据，这里可以进行上传到服务器或者其他逻辑操作 */
                             // var img = new Image();
                             // img.src = imageUrl;
                             // document.getElementById("image-list").appendChild(img);
-                            // console.log(img)
+                            console.log(imageUrl)
                             let blob = dataURLtoFile(imageUrl, 'image/jpeg');
                             // _that.submitPic(blob);
                             let param = new FormData(); //创建form对象
@@ -430,18 +440,9 @@
                         },
 
                     });
+                },
 
-                    function dataURLtoFile(dataURI, type) {
-                        let binary = atob(dataURI.split(',')[1]);
-                        let array = [];
-                        for (let i = 0; i < binary.length; i++) {
-                            array.push(binary.charCodeAt(i));
-                        }
-                        return new Blob([new Uint8Array(array)], {
-                            type: type
-                        });
-                    };
-                }
+          
             }
         })
     </script>

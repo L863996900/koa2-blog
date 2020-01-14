@@ -5,7 +5,6 @@
     const Bodyparser = require('koa-bodyparser');
     const fs = require('fs');
     const mysql = require('mysql2/promise');
-    // const mysql=require('mysql')
     const app = new koa();
     const multer = require('koa-multer')
     const ueditor = require('koa2-ueditor');
@@ -26,7 +25,7 @@
     const connection = await mysql.createConnection({
         host: '127.0.0.1',
         user: 'root',
-        password: '863996900wm',
+        password: '888888',
         database: 'blog'
     });
     //配置本地图片上传接口
@@ -89,6 +88,10 @@
     //创建前端页面路由
     router.get('/', async ctx => {
         const content = fs.readFileSync('./static/index.html');
+        ctx.body = content.toString();
+    });
+    router.get('/ss', async ctx => {
+        const content = fs.readFileSync('./static/ss.html');
         ctx.body = content.toString();
     });
     //路由模块

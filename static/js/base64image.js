@@ -1,5 +1,5 @@
 var base64Image = function(param) {
-    // console.log(param)
+    console.log(param)
     var fileInput = param.file;
 
     var widthInput = param.width ? param.width : 750;

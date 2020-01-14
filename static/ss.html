@@ -34,17 +34,17 @@
                     let param = new FormData(); //创建form对象
                     param.append('file', blob); //通过append向form对象添加数据
                     console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
-                    // if (param) {
-                    //     fetch('http://localhost:8080/upload', {
-                    //         method: 'post',
-                    //         body: param
-                    //     }).then(res => {
-                    //         return res.json();
-                    //     }).then(data => {
-                    //         console.log(data)
-                    //         this.picture = data.filename
-                    //     })
-                    // }
+                    if (param) {
+                        fetch('http://localhost:8080/upload', {
+                            method: 'post',
+                            body: param
+                        }).then(res => {
+                            return res.json();
+                        }).then(data => {
+                            console.log(data)
+                            this.picture = data.filename
+                        })
+                    }
                 },
 
             });

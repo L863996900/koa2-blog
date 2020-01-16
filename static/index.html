@@ -69,6 +69,7 @@
             <!-- <input type="file" style="display: none" onchange="fileUp(this)" id="file-up">
             <input type="button" value="点我上传图片" onclick="document.getElementById('file-up').click();" /> -->
             <div class="picture">
+                <div>照片</div>
                 <img :src="this.picture" alt="">
             </div>
         </div>
@@ -408,6 +409,7 @@
                     });
                 },
                 fileUp(e) {
+                    var that=this;
                     base64Image({
                         width: 750,
                         /*【选填】宽度默认750，如果图片尺寸大于该宽度，图片将被设置为该宽度*/
@@ -421,7 +423,7 @@
                             // img.src = imageUrl;
                             // document.getElementById("image-list").appendChild(img);
                             console.log(imageUrl)
-                            let blob = dataURLtoFile(imageUrl, 'image/jpeg');
+                            let blob = that.dataURLtoFile(imageUrl, 'image/jpeg');
                             // _that.submitPic(blob);
                             let param = new FormData(); //创建form对象
                             param.append('file', blob); //通过append向form对象添加数据
@@ -434,7 +436,7 @@
                                     return res.json();
                                 }).then(data => {
                                     console.log(data)
-                                    this.picture = data.filename
+                                    that.picture = data.filename
                                 })
                             }
                         },

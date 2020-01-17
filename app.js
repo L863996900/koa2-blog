@@ -146,9 +146,9 @@
     });
     //删除文章
     router.post('/DeleteArticle', async ctx => {
-        const id = Number(ctx.request.body.id) || 0;
+        const article_id = Number(ctx.request.body.article_id) || 0;
         let sql = "DELETE FROM article WHERE ??=?";
-        let [result] = await connection.query(sql, ['id', id]);
+        let [result] = await connection.query(sql, ['article_id', article_id]);
         if (result.affectedRows > 0) {
             ctx.body = {
                 code: 200,
@@ -197,7 +197,7 @@
     });
     //查询总的文章条数
     router.get('/SelectArticleAll', async ctx => {
-        const sql2 = `SELECT * FROM article  ORDER BY id DESC`;
+        const sql2 = `SELECT * FROM article  ORDER BY article_id DESC`;
         const [list] = await connection.query(sql2);
         ctx.body = {
             code: 200,
@@ -209,10 +209,10 @@
     });
     //查询某一个文章
     router.get('/SelectArticleOne', async ctx => {
-        let id = ctx.query.id || ""
-        id = Number(id)
-        if (id) {
-            where = 'WHERE id=' + id
+        let article_id = ctx.query.article_id || ""
+        article_id = Number(article_id)
+        if (article_id) {
+            where = 'WHERE article_id=' + article_id
         }
         const sql = `SELECT * FROM article ${where}`;
         const [list] = await connection.query(sql);

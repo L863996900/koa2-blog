@@ -155,6 +155,7 @@
                 prepage: 4,
                 pages: 1,
                 type: 1,
+                article_id:18,
                 id: 1,
                 username: 1113,
                 password: 1112
@@ -308,7 +309,7 @@
                     })
                 },
                 getDetail() {
-                    fetch('/SelectArticleOne?id=' + this.id).then(res => {
+                    fetch('/SelectArticleOne?article_id=' + this.article_id).then(res => {
                         return res.json();
                     }).then(data => {
                         console.log(data)

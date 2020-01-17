@@ -6,29 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="./js/exif.js"></script>
+    <script src="./js/index.js" type="text/javascript"></script>
+    <style>
+        input {
+            margin: 5px 0;
+        }
+    </style>
 </head>
 
 <body>
-    <label class="col-sm-1 control-label no-padding-right">文章详情</label>
-    <div class="col-sm-10">
-        <script name="content" id="editor" type="text/plain" style="width:600px;height:300px;"></script>
-    </div>
-    <div id="app">
-        <h1>App</h1>
-        <div>
-            <input type="text" v-model="user_id" placeholder="填写id" />
-            <input type="text" v-model="category" placeholder="填写文章分类" />
-            <input type="text" v-model="title" placeholder="填写文章题目" />
-            <input type="text" v-model="data" placeholder="填写文章发布日期" />
-            <button @click="getAllHtml()">获得整个html的内容</button>
-            <button @click="getContent()">获得内容</button>
-            <textarea type="text" v-model="content" placeholder="填写文章内容"></textarea>
-            <button @click="add">添加新任务</button>
-            <button @click='zhuce'>注册</button>
+    <div>
+        <nav class="nav navbar bg-info" style="height: 50px;">
+            <div class="container">
+                <div class="nav navbar-nav navbar-left">Devon's Blog 后台管理</div>
+                <div class="nav navbar-nav navbar-right">文章发布</div>
+            </div>
+        </nav>
+        <div id="app" class="container" style="margin: 20px auto;">
+            <h2>文章发布管理</h2>
+            <div class="container" style="margin:10px 20px; ">
+                <div>填写发布者id： <input type="text" class="form-control" v-model="user_id" placeholder="请填写(数字)..." />
+                </div>
+                <div>选择文章分类：
+                    <select class="form-control" v-model="category">
+                        <option>学习</option>
+                        <option>日常</option>
+                        <option>技术</option>
+                        <option>推荐</option>
+                    </select></div>
+                <div>填写文章题目： <input type="text" class="form-control" v-model="title" placeholder="请填写(文本)..." /></div>
+                <input type="file" class="form-control" ref="file" accept="image/png,image/gif,image/jpeg"
+                    @change="fileUp" />
+                <div class="picture">
+                    <div>封面照片：</div>
+                    <img class="img-rounded" style="width: 500px;" :src="this.picture" alt="">
+                </div>
+                <h4 style="margin:10px;">文章内容：</h4>
+            </div>
+            <script name="content" id="editor" type="text/plain"
+                style="width:1000px;height:300px;margin: 10px auto;"></script>
+            <div class="container">
+                <button class="btn btn-info" style="margin: 10px;" @click="getContent()">获取文章内容</button>
+                <div class="border">
+                    <div v-html="content">
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-lg active" style="margin: 10px;" @click="add">发布文章</button>
+            </div>
         </div>
     </div>
-
     <script type="text/javascript" charset="utf-8" src="./ueditor/ueditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="./ueditor/ueditor.all.min.js">
     </script>
@@ -37,7 +67,7 @@
     <script>
         var ueditor = UE.getEditor('editor');
         // 注意 UEditor 准备好之后才可以使用 
-        ueditor.addListener("ready", function() {
+        ueditor.addListener("ready", function () {
             // 设置内容
             // ueditor.setContent(`{{@list.content}}`);
         })
@@ -45,91 +75,15 @@
         var app = new Vue({
             el: '#app',
             data: {
-                user_id: '',
-                category: '',
+                user_id: '1',
+                category: '学习',
                 title: '',
-                data: '',
-                content: '',
-                list: [],
-                page: 1,
-                prepage: 4,
-                pages: 0,
-                type: 0,
-                id: 1,
-                username: 1113,
-                password: 1112
+                content: '<p style="margin:10px">暂无数据</p>',
+                picture: ''
             },
             created() {
-                // this.getData();
-                // this.getDetail();
-                // this.denglu();
             },
             methods: {
-                // zhuce() {
-                //     fetch('/regist', {
-                //         method: 'post',
-                //         headers: {
-                //             'Content-Type': 'application/json'
-                //         },
-                //         body: JSON.stringify({
-                //             username: this.username,
-                //             password: this.password,
-                //         })
-                //     }).then(res => {
-                //         return res.json();
-                //     }).then(data => {
-                //         console.log(data)
-                //     })
-                // },
-                // denglu() {
-                //     fetch('/login', {
-                //         method: 'post',
-                //         headers: {
-                //             'Content-Type': 'application/json'
-                //         },
-                //         body: JSON.stringify({
-                //             username: this.username,
-                //             password: this.password,
-                //         })
-                //     }).then(res => {
-                //         return res.json();
-                //     }).then(data => {
-                //         console.log(data)
-                //     })
-                // },
-                // getDetail() {
-                //     fetch('/SelectArticleOne?id=' + this.id).then(res => {
-                //         return res.json();
-                //     }).then(data => {
-                //         console.log(data)
-                //     });
-                // },
-                // getData() {
-                //     fetch('/SelectArticle').then(res => {
-                //         return res.json();
-                //         console.log(res)
-                //     }).then(data => {
-                //         console.log(data)
-                //             // this.list = data.data;
-                //     });
-                // },
-                // getData() {
-                //     fetch('/SelectArticle?type=' + this.type + '&page=' + this.page + '&prepage=' + this.prepage).then(res => {
-                //         return res.json();
-                //     }).then(data => {
-                //         console.log(data)
-                //             // this.todos = data.data.todos;
-                //             // this.pages = data.data.pages;
-                //     });
-                // },
-                // changePage(n) {
-                //     this.page = n;
-                //     this.getData();
-                // },
-                // changeType(m) {
-                //     this.type = m;
-                //     this.getData();
-                // },
                 add() {
                     fetch('/AddArticle', {
                         method: 'post',
@@ -140,9 +94,8 @@
                             user_id: this.user_id,
                             category: this.category,
                             title: this.title,
-                            data: this.data,
                             content: this.content,
-
+                            picture: this.picture
                         })
                     }).then(res => {
                         console.log(res)
@@ -150,7 +103,12 @@
                     }).then(data => {
                         if (!data.code) {
                             console.log(data)
+                            alert('发布成功')
                         }
+                    }).catch(err => {
+                            console.log(err)
+                            alert('网络错误，发布失败')
+                        
                     })
                 },
                 getAllHtml() {
@@ -158,29 +116,14 @@
                 },
                 getContent() {
                     var arr = [];
-                    arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-                    arr.push("内容为：");
+                    var that = this;
+                    // arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+                    // arr.push("内容为：");
                     arr.push(UE.getEditor('editor').getContent());
+                    // alert(arr.join("\n"));
                     alert(arr.join("\n"));
+                    that.content = arr.join("\n");
                 },
-                // toggle(id, todo) {
-                //     fetch('/toggle', {
-                //         method: 'post',
-                //         headers: {
-                //             'Content-Type': 'application/json'
-                //         },
-                //         body: JSON.stringify({
-                //             id,
-                //             todo: Number(1)
-                //         })
-                //     }).then(res => {
-                //         return res.json();
-                //     }).then(data => {
-                //         if (!data.code) {
-                //             this.getData();
-                //         }
-                //     });
-                // },
                 remove(id) {
                     fetch('/remove', {
                         method: 'post',
@@ -197,10 +140,54 @@
                             this.getData();
                         }
                     });
-                }
+                },
+                dataURLtoFile(dataURI, type) {
+                    let binary = atob(dataURI.split(',')[1]);
+                    let array = [];
+                    for (let i = 0; i < binary.length; i++) {
+                        array.push(binary.charCodeAt(i));
+                    }
+                    return new Blob([new Uint8Array(array)], {
+                        type: type
+                    });
+                },
+                fileUp(e) {
+                    var that = this;
+                    base64Image({
+                        width: 750,
+                        /*【选填】宽度默认750，如果图片尺寸大于该宽度，图片将被设置为该宽度*/
+                        ratio: 0.75,
+                        /*【选填】压缩率默认0.75 */
+                        file: e,
+                        /*【必填】对应的上传元素 */
+                        callback: function (imageUrl) { /*【必填】处理成功后的回调函数 */
+                            /*imageUrl为得到的图片base64数据，这里可以进行上传到服务器或者其他逻辑操作 */
+                            // var img = new Image();
+                            // img.src = imageUrl;
+                            // document.getElementById("image-list").appendChild(img);
+                            let blob = that.dataURLtoFile(imageUrl, 'image/jpeg');
+                            // _that.submitPic(blob);
+                            let param = new FormData(); //创建form对象
+                            param.append('file', blob); //通过append向form对象添加数据
+                            // console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+                            if (param) {
+                                fetch('http://localhost:8080/upload', {
+                                    method: 'post',
+                                    body: param
+                                }).then(res => {
+                                    return res.json();
+                                }).then(data => {
+                                    that.picture = data.filename
+                                })
+                            }
+                        },
+
+                    });
+                },
             }
         })
     </script>
+
 </body>
 
 </html>

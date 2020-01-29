@@ -1,0 +1,274 @@
+/* 全局css */
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    color: #8f8f8f;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+
+/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+    width: 7px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px #8a8a8a;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #8a8a8a;
+    box-shadow: inset 0 0 6px #8a8a8a;
+    background-color: #8a8a8a;
+}
+
+ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.icons {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: 0 .2rem .2rem .2rem;
+    vertical-align: middle;
+}
+
+/* 导航栏css */
+.navbar {
+    width: 100%;
+    height: 3.5rem;
+    background: #fff;
+    display: flex;
+    flex-wrap: nowrap;
+    line-height: 3.5rem;
+    box-sizing: border-box;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: fixed;
+    opacity: 0.4;
+    transition: opacity 1s;
+    color: #8f8f8f;
+    z-index: 99;
+}
+
+.navbar:hover {
+    opacity: 1 !important;
+}
+
+.logo {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin: 0 0.2rem 0.25rem 0;
+}
+
+.navbar-list {
+    height: 100%;
+}
+
+.navbar-list-item {
+    height: 100%;
+    float: left;
+    padding: 0 .4rem;
+}
+
+/* 返回顶部css */
+
+.backtop {
+    position: fixed;
+    bottom: 4rem;
+    right: 5rem;
+    width: 2rem;
+    height: 2rem;
+    opacity: 0.8;
+    display: none;
+    transition: opacity 0.5s;
+}
+
+.backtop:hover {
+    opacity: 1;
+}
+
+
+/* 背景图片css */
+
+.cotainer {
+    background: url('../img/27.jpg') no-repeat;
+    background-size: 100% 100%;
+    height: 80vh;
+    /*min-height: 500px;*/
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+/* 底部内容css */
+.content {
+    width: 50rem;
+    padding: 3rem;
+    margin: 0 auto;
+
+}
+
+.content-title {
+    font-size: 2.5rem;
+    color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    margin: 0 0 40px 0;
+    text-shadow: 0 0 5px #b2b2b2;
+}
+
+.content-header {
+    width: 90%;
+    border-radius: 15px;
+    background: #fff;
+    margin: 0 auto;
+}
+
+.MsgHeader {
+    text-align: center;
+    padding: 2rem 0 0 0;
+    font-size: 1.5rem;
+    color: rgba(0, 0, 0, 0.8);
+    letter-spacing: 0.1rem;
+    margin-top: 2rem;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.MsgData {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+    padding: 2rem 0 1.5rem 0;
+    width: 90%;
+    margin: 0 auto;
+    border-bottom: 0.5px dashed #999;
+}
+
+.MsgData span {
+    padding: 0 1rem;
+}
+
+.MsgContent {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 1.2rem;
+    padding: 2rem 1.5rem;
+    min-height: 10rem;
+}
+
+.MsgContent div {
+    height: 1.8rem;
+    width: 0.2rem;
+    display: inline-block;
+    background: #000;
+    margin: 0 0.8rem 0.2rem 0;
+    vertical-align: middle;
+    border-radius: 10px;
+}
+
+.MsgFoot {
+    text-align: right;
+    color: #8a8a8a;
+    padding: 3rem 1rem 1rem 0;
+}
+
+.leavingTitle {
+    height: 5rem;
+    width: 90%;
+    padding: 3rem 0;
+    margin: 0 auto;
+    text-align: center;
+
+}
+
+.leavingText {
+    display: inline-block;
+    font-size: 1.5rem;
+    color: rgba(0, 0, 0, 0.85);
+    text-align: center;
+}
+
+.leavingText img {
+    width: 2rem;
+    height: 2rem;
+    padding: 0.3rem;
+    vertical-align: middle;
+}
+
+.hr {
+    display: inline-block;
+    width: 12.3rem;
+    height: 0.1rem;
+    margin: 0 1.5rem;
+    background: #8a8a8a;
+    margin-bottom: 0.5rem;
+}
+
+.leavingMsgList {
+    margin: 1rem auto;
+    padding: 1rem;
+
+}
+
+.MsgItem {
+    padding: 1rem 1rem;
+    position: relative;
+    background: #fff;
+    width: 100%;
+    border-radius: 15px;
+}
+
+.item-header {
+    width: 20%;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.item-header img {
+    width: 5rem;
+    height: 5rem;
+}
+
+.item-center {
+    width: 76%;
+    display: inline-block;
+
+}
+
+.item-name{
+    padding-bottom: 0.3rem;
+    color: #5a5a5a;
+    font-weight: 700;
+}
+.item-content{
+    text-indent: 2rem;
+    padding: 0.5rem 0;
+}
+.item-data {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+}

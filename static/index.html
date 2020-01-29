@@ -76,6 +76,7 @@
         <div>
             <input type="text" v-model="article_id" placeholder="评论文章的id">
             <input type="text" v-model="com_content" placeholder="评论内容">
+            <input type="text" v-model="com_name" placeholder="用户名">
             <button @click="Upcomment">提交评论</button>
         </div>
         <div>
@@ -146,6 +147,7 @@
                 com_content: '',
                 picture: '',
                 user_id: '',
+                com_name:'',
                 category: '',
                 title: '',
                 data: '',
@@ -240,7 +242,8 @@
                         },
                         body: JSON.stringify({
                             article_id: this.article_id,
-                            content: this.com_content
+                            content: this.com_content,
+                            com_name:this.com_name
                         })
                     }).then(res => {
                         return res.json();

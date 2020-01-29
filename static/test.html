@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.js"></script>
+</head>
+<body>
+<div style="position: relative">
+    <ul id="categoryList" class="categoryMenu" style="left: 108px;">
+        <!-- 用来存放动态生成的li -->
+    </ul>
+</div>
+<script>
+
+    var goodsList = {
+        "平板电视" : "大电视|小电视|曲面屏|小米电视",
+        "马桶" : "马桶盖|大马桶|智能马桶盖|全国联保",
+        "沙发" : "皮沙发|布沙发|小沙发",
+        "电热水器" : "美的电热水器|三棱电热水器|西门子电热水器|海尔电热水器",
+        "平衡车" : "小米平衡车|大平衡车|迷你平衡车|小平衡车",
+        "扫地机器人" : "智能扫地机器人|小扫地机器人|小米扫地机器人|进口扫地机器人",
+        "原汁机" : "美的原汁机|长虹原汁机|海尔原汁机|智能原汁机",
+        "冰箱" : "海尔冰箱|单门冰箱|双门冰箱|智能冰箱",
+        "空调" : "美的空调|智能空调|中央空调|柜式空调",
+        "女表" : "时尚女表|电子女表|商务女表|好看的女表",
+        "男表" : "商务男表|商务男表|商务男表|商务男表",
+        "男士手拿包" : "男士手拿包|男士手拿包|男士手拿包|男士手拿包",
+        "男士西服" : "男士西服|男士西服|男士西服|男士西服",
+        "时尚男鞋" : "时尚男鞋|时尚男鞋|时尚男鞋|时尚男鞋",
+        "品牌女装" : "品牌女装|品牌女装|品牌女装|品牌女装",
+        "太阳镜" : "太阳镜|太阳镜|太阳镜|太阳镜",
+        "安全座椅" : "安全座椅|安全座椅|安全座椅|安全座椅"
+    }
+
+    // 循环遍历上面的json数据，每一行代表一个li
+    for (var good in goodsList) {
+        // 创建一个li
+        var li = $("<li class=\"eachCategory\"></li>");
+        // 创建两个div，右边隐藏的框框
+        var div1 = $("<div class=\"pop\" style=\"display: none;\"></div>");
+        var div2 = $("<div class=\"pop1\"></div>");
+        // 把json里面的value按照|来拆分，拆分后的数据放在lists数组中
+        var lists = goodsList[good].split("|");
+        // 循环遍历lists数组
+        for (var list in lists) {
+            // 每循环一个生成一个a标签，a标签里面存放value里面的每一个值，并把a标签append到div2上
+            div2.append("<a href=\"\">" + lists[list] + "</a>");
+        }
+        // 把div2，append到div1上，并在最后append一个分界线，就是截图右边下面的虚线
+        div1.append(div2).append("<div class=\"seperator\"></div>");
+        // 再把div1，append到li上
+        li.append("<span class=\"glyphicon glyphicon-link\"></span>").append("<a href=\"\" style=\"color: black;text-decoration:none;margin-left: 4px;\">" + good + "</a>").append(div1);
+        // 最后定位到ul，并把li append到ul上
+        $("#categoryList").append(li);
+    }
+    $("ul.categoryMenu > li").on("mouseenter", function() {
+        //定位到背景div，把背景颜色改为白色
+        $(this).css("background-color", "white");
+        //定位到字体的a标签，把字体颜色改为#66ccff
+        $(this).children().eq(1).css("color", "#66ccff");
+        //定位到右边隐藏的div，并且把display由none改为空，把隐藏的边框显示出来
+        $(this).children().eq(2).css("display", "");
+    });
+
+    //定位到li，添加鼠标移出事件
+    $("ul.categoryMenu > li").on("mouseleave", function() {
+        //定位到背景div，把背景颜色改为#e2e2e3
+        $(this).css("background-color", "#e2e2e3");
+        //定位到字体的a标签，把字体颜色改为black
+        $(this).children().eq(1).css("color", "black");
+        //定位到右边隐藏的div，并且把display由空改为none，把显示的边框隐藏起来
+        $(this).children().eq(2).css("display", "none");
+    });
+</script>
+</body>
+</html>

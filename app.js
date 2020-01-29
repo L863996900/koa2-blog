@@ -25,7 +25,7 @@
     const connection = await mysql.createConnection({
         host: '127.0.0.1',
         user: 'root',
-        password: '888888',
+        password: 'lyx863996900',
         database: 'blog'
     });
     //配置本地图片上传接口
@@ -76,7 +76,8 @@
             // 上传图片的格式
             "imageAllowFiles": [".png", ".jpg", ".jpeg"],
             // 最后保存的文件路径
-            "imagePathFormat": "/image/{yyyy}{mm}{dd}/{filename}"
+            "imagePathFormat": "/image/{yyyy}{mm}{dd}/{filename}",
+            "imageUrlPrefix": "http://localhost:8080"
         }])
     );
     //创建增加文章路由
@@ -270,8 +271,8 @@
     });
     //用户评论
     router.post('/AddComment', async ctx => {
-        let { content, article_id } = ctx.request.body || "";
-        let sql = `INSERT INTO comment (article_id,content) values ('${article_id}','${content}')`;
+        let { content, article_id,com_name } = ctx.request.body || "";
+        let sql = `INSERT INTO comment (article_id,content,com_name) values ('${article_id}','${content}','${com_name}')`;
         let [res] = await connection.query(sql)
         if (res.affectedRows > 0) {
             ctx.body = {

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <title>Log</title>
+    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/log.css">
+    <script src="js/main.js"></script>
+<body>
+<header>
+    <div class="main">
+        <div class="navbar">
+            <div class="navbar-left">
+                <img class="logo" src="img/logo.jpg" alt="logo"><span>Devon's Blog</span>
+            </div>
+            <div class="navbar-right">
+                <ul class="navbar-list">
+                    <li class="navbar-list-item"><a href="./index.html"><img class="icons" src="icons/shouye.png"
+                                                                             alt=""/>首页</a></li>
+                    <!--<li class="navbar-list-item"><img class="icons" src="icons/shouye.png" alt=""/>首页</li>-->
+                    <li class="navbar-list-item"><a href="./log.html"><img class="icons" src="icons/article.png"
+                                                                           alt=""/>归档</a></li>
+                    <li class="navbar-list-item"><a href="./leavemsg.html"><img class="icons" src="icons/message.png"
+                                                                             alt=""/>留言板</a></li>
+                    <li class="navbar-list-item"><a href="./index.html"><img
+                            style="padding: .1rem;margin-right: 0.1rem"
+                            class="icons"
+                            src="icons/about.png" alt=""/>关于</a>
+                    </li>
+                    <li class="navbar-list-item"><a href="./index.html"><img
+                            style="padding: .1rem;margin-right: -0.1rem"
+                            class="icons"
+                            src="icons/user.png" alt=""/>个人</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="backtop"><img src="./icons/top.png" alt=""></div>
+        <!--<iframe src="./log.html" frameborder="0" width="100%" height="100%"></iframe>-->
+        <div class="cotainer">
+
+        </div>
+        <div class="content">
+            <div class="content-title">Development Message 开发日志</div>
+            <div class="timeline-small">
+                <div class="timeline-small-body">
+                    <ul>
+                        <li>
+                            <div class="bullet"></div>
+                            <div class="date">2019年12月30日</div>
+                            <div class="desc">
+                                <h3>服务器部署</h3>
+                                <h4>简单配置了一下环境资源，上传到服务器就可以了</h4>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="bullet"></div>
+                            <div class="date">2019年12月24日</div>
+                            <div class="desc">
+                                <h3>前端完成</h3>
+                                <h4>页面用的纯原生写法，没有用到目前比较的热门的开源框架，主要是想回顾一下前面的基础（手动黑脸），等后面重构的时候应该会去用我比较熟悉的框架。</h4>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="bullet"></div>
+                            <div class="date">2019年12月10日</div>
+                            <div class="desc">
+                                <h3>后端完成</h3>
+                                <h4>实际写的时候真给我整吐了，踩了不少坑，也解决了很多问题，比如一些web自身api的问题，图片上传的问题，富文本编辑器这些，好在我挺过来了，感觉收获蛮大的2333333</h4>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="bullet"></div>
+                            <div class="date">2019年12月1日</div>
+                            <div class="desc">
+                                <h3>后端demo完成</h3>
+                                <h4>之前写博客后端的出了一系列的问题，也没来的及去处理，然后这两条就一直在花心思解决问题了，测试了一晚上问题都解决了，也写出了一个小demo。</h4>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="bullet"></div>
+                            <div class="date">2019年11月30日</div>
+                            <div class="desc">
+                                <h3>后端架构完成</h3>
+                                <h4>emmmmmm，大概划分了一下模块就上手直接撸了，博客的后端使用NodeJs开发，选用koa2框架，koa2的文档比较少，但是它轻量的开发方式，以及生态已经比较完善，大量好用的中间件，对我来说学习成本比较小。我后续会整理一下关于koa2的学习笔记分享出来。</h4>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="bullet"></div>
+                            <div class="date">2019年11月24日</div>
+                            <div class="desc">
+                                <h3>数据库建表完成</h3>
+                                <h4>数据库学的不是很好，都是现学现用，用了大概两天时间整理了一下需求字段。因为是博客类项目，数据库设计按模块分类，不面向用户。以后如果有时间重构的话，会试着重新设计。现在应该没时间了哈哈哈哈哈哈哈哈哈。</h4>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<script>
+    //页面悬停事件
+    $(".timeline-small-body li").mouseenter(function () {
+        $(this).addClass('active');
+        $(".active .bullet").css({'background':'#777','transition': 'background 0.2s'})
+    });
+    $(".timeline-small-body li").mouseleave(function () {
+        $(this).removeClass('active');
+        $(".bullet").css({'background':'#fff','transition': 'background 0.2s'})
+    });
+    // $(document).click(function(e) {
+    //     var size = 300//自定义大小
+    //     $('body').append("<div class='dianjixiaoguo'>").append("<div class='dianjixiaoguo2'>")//创建一个div
+    //     $('.dianjixiaoguo').css({//设置初始样式
+    //         position: 'fixed',//使用相对于浏览器进行定位(必须)
+    //         left: e.clientX,
+    //         top: e.clientY,
+    //         borderRadius: size + 'px',
+    //         border: '2px solid #8a8a8a',
+    //     }).stop().animate({//设置最终样式，用动画来表现(当点击过快时需要用stop来终止上一次未进行完的动画)
+    //         width: size,
+    //         height: size,
+    //         speed:2000,
+    //         left: e.clientX - size / 2,
+    //         top: e.clientY - size / 2,
+    //         opacity: '0'
+    //     }, function() {//动画运行完毕后删除此div
+    //         $('body .dianjixiaoguo').remove()
+    //     });
+    //     $('.dianjixiaoguo2').css({//设置初始样式
+    //         position: 'fixed',//使用相对于浏览器进行定位(必须)
+    //         left: e.clientX,
+    //         top: e.clientY,
+    //         borderRadius: 200 + 'px',
+    //         border: '2px solid #8a8a8a',
+    //     }).stop().animate({//设置最终样式，用动画来表现(当点击过快时需要用stop来终止上一次未进行完的动画)
+    //         width: 200,
+    //         height: 200,
+    //         speed:2000,
+    //         left: e.clientX - 200 / 2,
+    //         top: e.clientY - 200 / 2,
+    //         opacity: '0'
+    //     }, function() {//动画运行完毕后删除此div
+    //         $('body .dianjixiaoguo2').remove()
+    //     })
+    // })
+
+</script>
+</body>
+</html>

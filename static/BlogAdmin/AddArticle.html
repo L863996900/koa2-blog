@@ -33,10 +33,10 @@
                 </div>
                 <div>选择文章分类：
                     <select class="form-control" v-model="category">
-                        <option>学习</option>
-                        <option>日常</option>
-                        <option>技术</option>
-                        <option>推荐</option>
+                        <option>学习交流</option>
+                        <option>咸鱼日常</option>
+                        <option>技术推荐</option>
+                        <option>好物分享</option>
                     </select></div>
                 <div>填写文章题目： <input type="text" class="form-control" v-model="title" placeholder="请填写(文本)..." /></div>
                 <input type="file" class="form-control" ref="file" accept="image/png,image/gif,image/jpeg"
@@ -76,7 +76,7 @@
             el: '#app',
             data: {
                 user_id: '1',
-                category: '学习',
+                category: '学习交流',
                 title: '',
                 content: '<p style="margin:10px">暂无数据</p>',
                 picture: ''

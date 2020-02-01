@@ -86,6 +86,11 @@
         ctx.body = content.toString();
     });
 
+    router.get('/home', async ctx => {
+        const content = fs.readFileSync('./static/home.html');
+        ctx.body = content.toString();
+    });
+
     //创建前端页面路由
     router.get('/', async ctx => {
         const content = fs.readFileSync('./static/index.html');

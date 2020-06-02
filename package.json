@@ -1,9 +1,10 @@
 {
-  "name": "text2",
+  "name": "blog2",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "serve": "node ./app/v1/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

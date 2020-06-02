@@ -25,7 +25,7 @@
     const connection = await mysql.createConnection({
         host: '127.0.0.1',
         user: 'root',
-        password: 'lyx863996900',
+        password: '123456',
         database: 'blog'
     });
     //配置本地图片上传接口
@@ -382,5 +382,7 @@
         }
     });
     app.use(router.routes());
-    app.listen(8080);
+    app.listen(8080,function(){
+        console.log('listen on 8080')
+    });
 })()

@@ -25,4 +25,17 @@ class InitManager {
             }
         }
     }
+    // 注册全局配置属性方法
+    static loadConfig(path = ''){
+        const configPath = path || process.cwd() + '/config/config.js'
+        const config = require(configPath)
+        global.config = config
+    }
+    // 注册全局请求错误处理  暂未开发
+    // static loadHttpException() {
+    //     const errors =require('./http-exception')
+    //     global.errs = errors
+    // }
 }
+
+module.exports = InitManager

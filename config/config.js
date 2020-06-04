@@ -1,4 +1,5 @@
 const config = {
+    environment: 'development',
     database: {
         dbname: 'blog',
         host: 'localhost',

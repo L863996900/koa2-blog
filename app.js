@@ -5,11 +5,8 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const InitManager = require('./middlewares/init')
 
-// const index = require('./routes/index')
-// const users = require('./routes/users')
-
-// error handler
 onerror(app)
 
 // middlewares
@@ -32,13 +29,15 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
-// routes
-// app.use(index.routes(), index.allowedMethods())
-// app.use(users.routes(), users.allowedMethods())
+InitManager.initCore(app)
 
+// app.use(index.routes(), index.allowedMethods())
+// app.use(user.routes(), user.allowedMethods())
 // error-handling
+
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
+
 
 module.exports = app

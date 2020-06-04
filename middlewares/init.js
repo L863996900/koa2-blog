@@ -7,13 +7,14 @@ class InitManager {
         // 入口方法
         InitManager.app = app;
         InitManager.initLoadRouters()
-        InitManager.loadHttpException()
         InitManager.loadConfig()
+        // InitManager.initEnviroment()
+        // InitManager.loadHttpException()
     }
     // 加载全部路由
     static initLoadRouters() {
         //绝对路径 process.cwd()
-        const apiDirectory = `${process.cwd()}/routes`
+        const apiDirectory = `${process.cwd()}/app/v2`
         // 路由自动挂载
         requireDiectory(module, apiDirectory,{
             visit: whenLoadMoudule
@@ -31,7 +32,13 @@ class InitManager {
         const config = require(configPath)
         global.config = config
     }
-    // 注册全局请求错误处理  暂未开发
+
+    // // 初始化全局环境
+    // static initEnviroment(){
+    //     process.env.NODE_ENV = global.config.environment
+    // }
+    
+    // 注册全局请求错误处理  
     // static loadHttpException() {
     //     const errors =require('./http-exception')
     //     global.errs = errors

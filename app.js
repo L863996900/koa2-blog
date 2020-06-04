@@ -6,7 +6,6 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const InitManager = require('./middlewares/init')
-
 onerror(app)
 
 // middlewares
@@ -29,14 +28,15 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
+app.use(require('./middlewares/response'))
 InitManager.initCore(app)
-
-// app.use(index.routes(), index.allowedMethods())
-// app.use(user.routes(), user.allowedMethods())
-// error-handling
 
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
+  ctx.render('error',{
+    msg:'服务器错误!',
+    error:err
+  })
 });
 
 

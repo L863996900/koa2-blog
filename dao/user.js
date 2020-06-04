@@ -34,15 +34,16 @@ class UserDao {
         user.save();
 
         return {
-            msg: '账号注册成功'
+            reg_phone:reg_phone,
+            username:username
          }
     }
     // 验证密码
-    static async verify(regPhone,password){
+    static async verify(reg_phone,password){
         // 查询用户是否存在
         const hasUser =await User.findOne({
             where:{
-                reg_phone:regPhone
+                reg_phone:reg_phone
             }
         })
         if(!hasUser){
@@ -59,6 +60,18 @@ class UserDao {
             }
         }
         return hasUser
+    }
+    //查询用户信息
+    static async detail(id){
+        const userInfo = await User.findOne({
+            where:{
+                id
+            }
+        })
+        if(!userInfo){
+            ctx.error('账号不存在或密码不正确')
+        }
+        return userInfo
     }
 }
 

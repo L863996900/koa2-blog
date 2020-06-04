@@ -1,18 +1,19 @@
 // token 令牌
 const jwt = require('jsonwebtoken')
 const basicAuth =require('basic-auth')
-
 //颁布令牌
 const generateToken = function (uid, scope) {
+
     const secretKey = global.config.security.secretKey;
     const expiresIn = global.config.security.expiresIn;
+
     const token = jwt.sign({
-        uid, //签名
+        uid,
         scope
-    }), secretKey, //加密私钥
-        {
-            expiresIn: expiresIn
-        } //过期时间
+    }, secretKey, 
+    {
+        expiresIn: expiresIn //过期时间
+    } )
     return token
 }
 
@@ -34,7 +35,7 @@ class AuthToken {
             // 无带token
             if(!Token || !Token.name){
                 errMsg = "需要携带token值"
-                throw new Error(errMsg)
+                ctx.error(errMsg)
             }
             try{
                 var decode = jwt.verify(Token.name,global.config.security.secretKey)
@@ -42,11 +43,11 @@ class AuthToken {
                 if(err.name === "TokenExpireError"){
                     errMsg ="Token已过期"
                 }
-                throw new Error(errMsg)
+                ctx.error(errMsg)
             }
             if(decode.scope <this.level){
                 errMsg="权限不足"
-                throw new Error(errMsg)
+                ctx.error(errMsg)
             }
             ctx.auth = {
                 uid:decode.uid,

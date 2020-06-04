@@ -12,7 +12,7 @@ const sequelize = new Sequelize(dbname,user,password, {
     dialect: 'mysql',
     host,
     port,
-    // logging: true, 数据操作日志记录
+    logging: false, // true代表开启数据库操作日志 false 代表关闭数据库操作日志
     timezone: '+08:00',
     define: {
         // 时间日期格式
@@ -42,7 +42,10 @@ const sequelize = new Sequelize(dbname,user,password, {
 })
 // 创建模型 
 sequelize.sync({
-    force: true //true创建表并将原表删除  false创建表并不删除原表
+    force: false //true创建表并将原表删除  false创建表并不删除原表
+
 })
 
-module.exports = sequelize
+module.exports = {
+    sequelize
+}

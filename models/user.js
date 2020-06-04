@@ -1,6 +1,6 @@
 const moment = require('moment')
 const bcrypt = require('bcryptjs')
-const seq  = require('../core/db')
+const {sequelize}  = require('../core/db')
 const {Sequelize, Model} = require('Sequelize');
 
 class User extends Model {
@@ -56,7 +56,7 @@ User.init({
         comment: '用户等级'
     },
 }, {
-    seq,
+    sequelize,
     modelName: 'user',
     tableName: 'user'
 })

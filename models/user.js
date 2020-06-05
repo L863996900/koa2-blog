@@ -61,4 +61,4 @@ User.init({
     tableName: 'user'
 })
 
-module.exports = User
+module.exports = {User}

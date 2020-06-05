@@ -15,6 +15,8 @@ const sequelize = new Sequelize(dbname,user,password, {
     logging: false, // true代表开启数据库操作日志 false 代表关闭数据库操作日志
     timezone: '+08:00',
     define: {
+        underscored: true,
+        charset:'utf8mb4',
         // 时间日期格式
         timestamps: true,
         // false返回非null delete列

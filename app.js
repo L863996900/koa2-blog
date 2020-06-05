@@ -31,6 +31,7 @@ app.use(async (ctx, next) => {
 app.use(require('./middlewares/response'))
 InitManager.initCore(app)
 
+
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
   ctx.render('error',{

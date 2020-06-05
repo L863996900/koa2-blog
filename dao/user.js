@@ -21,7 +21,7 @@ class UserDao {
         })
         if(hasUser){
             return {
-                msg:'用户已存在'
+                err_msg:'用户已存在'
             }
         }
         const user = new User();
@@ -34,12 +34,17 @@ class UserDao {
         user.save();
 
         return {
+            msg:'注册成功',
             reg_phone:reg_phone,
             username:username
          }
     }
     // 验证密码
-    static async verify(reg_phone,password){
+    static async verify(params){
+        const { 
+            reg_phone,
+            password,
+        } = params
         // 查询用户是否存在
         const hasUser =await User.findOne({
             where:{
@@ -48,7 +53,7 @@ class UserDao {
         })
         if(!hasUser){
             return {
-                msg: '账号不存在或密码不正确'
+                err_msg: '账号不存在或密码不正确'
             }
         }
         // 验证密码是否正确
@@ -56,7 +61,7 @@ class UserDao {
 
         if(!correct){
             return {
-                msg: '密码不正确'
+                err_msg: '密码不正确'
             }
         }
         return hasUser

@@ -31,11 +31,13 @@ class AuthToken {
     get m() {
         return async (ctx,next) =>{
             const Token = basicAuth(ctx.req);
+            // const Token = ctx.req.headers.Authorization
+            console.log(Token)
             let errMsg = "无效的token";
             // 无带token
-            if(!Token || !Token.name){
+            if(!Token){
                 errMsg = "需要携带token值"
-                ctx.error(errMsg)
+                // throw new Error(errMsg)
             }
             try{
                 var decode = jwt.verify(Token.name,global.config.security.secretKey)
@@ -43,15 +45,18 @@ class AuthToken {
                 if(err.name === "TokenExpireError"){
                     errMsg ="Token已过期"
                 }
-                ctx.error(errMsg)
+                // throw new Error(errMsg)
             }
-            if(decode.scope <this.level){
-                errMsg="权限不足"
-                ctx.error(errMsg)
-            }
+    
+            // if(decode.scope <this.level){
+            //     errMsg="权限不足"
+            //     ctx.error(errMsg)
+            // }
+            ctx.json(decode)
             ctx.auth = {
-                uid:decode.uid,
-                scope:decode.scope
+                decode
+                // uid:decode.name
+                // scope:decode.scope
             }
             await next()
         }

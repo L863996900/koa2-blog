@@ -68,13 +68,14 @@ class UserDao {
     }
     //查询用户信息
     static async detail(id){
-        const userInfo = await User.findOne({
+        const scope = 'bh'
+        const userInfo = await User.scope(scope).findOne({
             where:{
                 id
             }
         })
         if(!userInfo){
-            ctx.error('账号不存在或密码不正确')
+           return
         }
         return userInfo
     }

@@ -1,21 +1,21 @@
 const xss = require('xss')
-const {Op} = require('sequelize')
+const { Op } = require('sequelize')
 
-const {Article} = require('../models/article')
+const { Article } = require('../models/article')
 
 // 定义文章模型
 class ArticleDao {
 
   // 创建文章
   static async create(params) {
-    const { 
-        title,
-        author,
-        keyword,
-        description,
-        content,
-        browse,
-        category
+    const {
+      title,
+      author,
+      keyword,
+      description,
+      content,
+      browse,
+      category
     } = params
     // 检测是否存在文章
     const hasArticle = await Article.findOne({
@@ -27,7 +27,8 @@ class ArticleDao {
     // 如果存在，抛出存在信息
     if (hasArticle) {
       return {
-          msg: '文章已存在'
+        code: 500,
+        msg: '文章已存在'
       }
     }
 
@@ -45,12 +46,13 @@ class ArticleDao {
 
     article.save();
     return {
-        msg: "文章发布成功"
+      code: 200,
+      msg: "文章发布成功"
     }
   }
   // 获取文章列表
   static async list(params) {
-    const {category, keyword, page = 1} = params;
+    const { category, keyword, page = 1 } = params;
     const pageSize = 10
 
     // 筛选方式
@@ -65,7 +67,7 @@ class ArticleDao {
 
     // 筛选方式：存在搜索关键字
     if (keyword) {
-      filter.title = {
+      filter.keyword = {
         [Op.like]: `%${xss(keyword)}%`
       };
     }
@@ -76,14 +78,14 @@ class ArticleDao {
       order: [
         ['created_at', 'DESC']
       ]
-    //   // 查询每篇文章下关联的分类
-    //   include: [{
-    //     model: Category,
-    //     as: 'category',
-    //     attributes: {
-    //       exclude: ['deleted_at', 'updated_at']
-    //     }
-    //   }]
+      //   // 查询每篇文章下关联的分类
+      //   include: [{
+      //     model: Category,
+      //     as: 'category',
+      //     attributes: {
+      //       exclude: ['deleted_at', 'updated_at']
+      //     }
+      //   }]
     });
 
     return {
@@ -110,33 +112,54 @@ class ArticleDao {
     });
     // 不存在抛出错误
     if (!article) {
-      throw new global.errs.NotFound('没有找到相关文章');
-
+      return {
+        code: 500,
+        msg: '没有找到相关文章'
+      }
     }
 
     // 软删除文章
     article.destroy()
+    return {
+      code: 200,
+      msg: '文章删除成功'
+    }
   }
 
   // 更新文章
-  static async update(id, v) {
+  static async update(id, params) {
     // 查询文章
     const article = await Article.findByPk(id);
     if (!article) {
-      throw new global.errs.NotFound('没有找到相关文章');
+      return {
+        code: 500,
+        msg: '没有找到相关文章'
+      }
     }
+    const {
+      title,
+      author,
+      keyword,
+      description,
+      content,
+      browse,
+      category
+    } = params
 
     // 更新文章
-    article.title = v.get('body.title');
-    article.author = v.get('body.author');
-    article.keyword = v.get('body.keyword');
-    article.description = v.get('body.description');
-    article.content = xss(v.get('body.content'));
-    article.cover = v.get('body.cover');
-    article.browse = v.get('body.browse');
-    article.category_id = v.get('body.category_id');
+    article.title = title;
+    article.author = author;
+    article.keyword = keyword;
+    article.description = description;
+    article.content = xss(content);
+    article.browse = browse;
+    article.category = category;
 
     article.save();
+    return {
+      code: 200,
+      msg: '文章更新成功'
+    }
   }
 
   // 更新文章浏览次数
@@ -144,12 +167,18 @@ class ArticleDao {
     // 查询文章
     const article = await Article.findByPk(id);
     if (!article) {
-      throw new global.errs.NotFound('没有找到相关文章');
+      return {
+        code: 500,
+        msg: '没有找到相关文章'
+      }
     }
     // 更新文章浏览
     article.browse = browse;
-
     article.save();
+    return {
+      code: 200,
+      msg: '浏览次数更新'
+    }
   }
 
   // 文章详情
@@ -157,19 +186,22 @@ class ArticleDao {
     const article = await Article.findOne({
       where: {
         id
-      },
-      // 查询每篇文章下关联的分类
-      include: [{
-        model: Category,
-        as: 'category',
-        attributes: {
-          exclude: ['deleted_at', 'updated_at']
-        }
-      }]
+      }
+      // // 查询每篇文章下关联的分类
+      // include: [{
+      //   model: Category,
+      //   as: 'category',
+      //   attributes: {
+      //     exclude: ['deleted_at', 'updated_at']
+      //   }
+      // }]
     });
 
     if (!article) {
-      throw new global.errs.NotFound('没有找到相关文章');
+      return {
+        code: 500,
+        msg: '没有找到相关文章'
+      }
     }
 
     return article;

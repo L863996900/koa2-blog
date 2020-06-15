@@ -12,7 +12,7 @@ class UserDao {
             email,
             user_picture
         } = params
-
+ 
         const hasUser = await User.findOne({
             where: {
                 reg_phone,

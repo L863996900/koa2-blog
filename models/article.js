@@ -1,5 +1,5 @@
 const moment = require('moment');
-const {sequelize} = require('../../core/db')
+const {sequelize} = require('../core/db')
 const {Sequelize, Model} = require('sequelize')
 // 定义文章模型
 class Article extends Model {
@@ -63,7 +63,7 @@ Article.init({
   tableName: 'article'
 })
 
-// // 文章关联分类
+// 文章关联评论
 // Comment.hasMany(Article, {
 //   foreignKey: 'category_id', sourceKey: 'id', as: 'article'
 // })

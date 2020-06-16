@@ -2,7 +2,10 @@ const router = require('koa-router')({
     prefix: '/api/v2/user'
 })
 const { UserDao } = require('../../dao/user')
-
+const {
+    RegisterValidator,
+    UserLoginValidator
+  } = require('../../validators/user')
 const {
     generateToken,
     AuthToken
@@ -12,25 +15,25 @@ const Auth_User = 16;
 
 //注册
 router.post('/register', async (ctx) => {
-    let { reg_phone, username, password, email, user_picture } = ctx.request.body
-    const user = await UserDao.create({
-        reg_phone: reg_phone,
-        username: username,
-        password: password,
-        email: email,
-        user_picture: user_picture,
-    })
+    const v = await new RegisterValidator().validate(ctx);
 
+    const user = await UserDao.create({
+        reg_phone: v.get('body.reg_phone'),
+        username: v.get('body.username'),
+        password: v.get('body.password2'),
+        email: v.get('body.email'),
+        user_picture: v.get('body.user_picture'),
+    })
     ctx.response.status = 200;
     ctx.json(user)
 })
 
 //登陆
 router.post('/login', async (ctx) => {
-    let { reg_phone, password } = ctx.request.body
+    const v = await new UserLoginValidator().validate(ctx);
     const user = await UserDao.verify({
-        reg_phone: reg_phone,
-        password: password
+        reg_phone: v.get('body.reg_phone'),
+        password: v.get('body.password')
     })
     if (user.id) {
         const token = generateToken(user.id, AuthToken.Admin)

@@ -8,8 +8,8 @@ class InitManager {
         InitManager.app = app;
         InitManager.initLoadRouters()
         InitManager.loadConfig()
-        // InitManager.initEnviroment()
-        // InitManager.loadHttpException()
+        InitManager.initEnviroment()
+        InitManager.loadHttpException()
     }
     // 加载全部路由
     static initLoadRouters() {
@@ -33,16 +33,16 @@ class InitManager {
         global.config = config
     }
 
-    // // 初始化全局环境
-    // static initEnviroment(){
-    //     process.env.NODE_ENV = global.config.environment
-    // }
+    // 初始化全局环境
+    static initEnviroment(){
+        process.env.NODE_ENV = global.config.environment
+    }
     
     // 注册全局请求错误处理  
-    // static loadHttpException() {
-    //     const errors =require('./http-exception')
-    //     global.errs = errors
-    // }
+    static loadHttpException() {
+        const errors =require('../middlewares/http-exception')
+        global.errs = errors
+    }
 }
 
 module.exports = InitManager

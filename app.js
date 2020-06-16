@@ -5,7 +5,9 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-const InitManager = require('./middlewares/init')
+const InitManager = require('./core/init')
+const catchError = require('./middlewares/error')
+
 onerror(app)
 
 // middlewares
@@ -19,6 +21,7 @@ app.use(require('koa-static')(__dirname + '/public'))
 app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
+app.use(catchError)
 
 // logger
 app.use(async (ctx, next) => {

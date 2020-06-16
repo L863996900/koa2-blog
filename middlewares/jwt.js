@@ -31,29 +31,38 @@ class AuthToken {
     get m() {
         return async (ctx, next) => {
             // const Token = basicAuth(ctx.req);
+            // console.log(Token)
             const Token = ctx.request.header.authorization
-            console.log(Token)
             let errMsg = "无效的token";
             // 无带token
             if (!Token) {
                 errMsg = "需要携带token值"
+                throw new global.errs.Forbidden(errMsg);
+
             }
             try {
                 var decode = jwt.verify(Token, global.config.security.secretKey)
             } catch (err) {
                 if (!decode) {
                     errMsg = "Token错误"
+                    throw new global.errs.Forbidden(errMsg);
+
                 }
                 if (err.name === "TokenExpireError") {
                     errMsg = "Token已过期"
+                    throw new global.errs.Forbidden(errMsg);
                 }
             }
-            if(decode){
+            if (decode.scope < this.level) {
+                errMsg = "权限不足"
+                throw new global.errs.Forbidden(errMsg);
+            }
+            if (decode) {
                 ctx.auth = {
                     uid: decode.uid,
                     scope: decode.scope,
                 }
-            }else{
+            } else {
                 ctx.auth = {
                     errMsg
                 }

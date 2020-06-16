@@ -7,20 +7,11 @@ const { Article } = require('../models/article')
 class ArticleDao {
 
   // 创建文章
-  static async create(params) {
-    const {
-      title,
-      author,
-      keyword,
-      description,
-      content,
-      browse,
-      category
-    } = params
+  static async create(v) {
     // 检测是否存在文章
     const hasArticle = await Article.findOne({
       where: {
-        title: title,
+        title: v.get('body.title'),
         deleted_at: null
       }
     });
@@ -36,14 +27,13 @@ class ArticleDao {
 
     const article = new Article();
 
-    article.title = title;
-    article.author = author;
-    article.keyword = keyword;
-    article.description = description;
-    article.content = xss(content);
-    article.browse = browse;
-    article.category = category;
-
+    article.title = v.get('body.title');
+    article.author = v.get('body.author');
+    article.keyword = v.get('body.keyword');
+    article.description = v.get('body.description');
+    article.browse = v.get('body.browse');
+    article.content = xss(v.get('body.content'));
+    article.category = v.get('body.category');
     article.save();
     return {
       code: 200,
@@ -52,8 +42,7 @@ class ArticleDao {
   }
   // 获取文章列表
   static async list(params) {
-    const { category, keyword, page = 1 } = params;
-    const pageSize = 10
+    const { category, keyword, page = 1,pageSize = 10 } = params;
 
     // 筛选方式
     let filter = {
@@ -127,7 +116,7 @@ class ArticleDao {
   }
 
   // 更新文章
-  static async update(id, params) {
+  static async update(id, v) {
     // 查询文章
     const article = await Article.findByPk(id);
     if (!article) {
@@ -136,24 +125,15 @@ class ArticleDao {
         msg: '没有找到相关文章'
       }
     }
-    const {
-      title,
-      author,
-      keyword,
-      description,
-      content,
-      browse,
-      category
-    } = params
 
     // 更新文章
-    article.title = title;
-    article.author = author;
-    article.keyword = keyword;
-    article.description = description;
-    article.content = xss(content);
-    article.browse = browse;
-    article.category = category;
+    article.title = v.get('body.title');
+    article.author = v.get('body.author');
+    article.keyword = v.get('body.keyword');
+    article.description = v.get('body.description');
+    article.browse = v.get('body.browse');
+    article.content = xss(v.get('body.content'));
+    article.category = v.get('body.category_id');
 
     article.save();
     return {
@@ -196,7 +176,6 @@ class ArticleDao {
       //   }
       // }]
     });
-
     if (!article) {
       return {
         code: 500,

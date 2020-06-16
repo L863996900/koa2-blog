@@ -18,6 +18,7 @@ class ArticleValidator extends LinValidator {
   }
 }
 
+
 class PositiveIdParamsValidator extends LinValidator {
   constructor() {
     super();

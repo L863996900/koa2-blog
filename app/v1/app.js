@@ -382,7 +382,5 @@
         }
     });
     app.use(router.routes());
-    app.listen(8080,function(){
-        console.log('listen on 8080')
-    });
+    app.listen(8080);
 })()

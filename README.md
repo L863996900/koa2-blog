@@ -8,13 +8,16 @@
 2.  sequelize
 3.  mysql
 4.  redis
+5.  jwt
 
 
 #### 安装教程
+1.  安装：
+```js
+npm install // 推荐使用 yarn安装
 ```
-npm install // 推荐使用yarn 安装
-```
-```
+2.  运行：
+```js
 // 运行1.0版本请运行
 npm run start:v1
 // 运行2.0版本请运行

@@ -37,6 +37,11 @@ const sequelize = new Sequelize(dbname,user,password, {
                 attributes: {
                     exclude: ['content', 'created_at','updated_at','deleted_at']
                 }
+            },
+            lg: {
+                attributes: {
+                    exclude: ['created_at','updated_at','deleted_at']
+                }
             }
         }
         

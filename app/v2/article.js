@@ -5,12 +5,13 @@ const { ArticleDao } = require('../../dao/article');
 const {
     ArticleValidator,
     PositiveIdParamsValidator
-  } = require('../../validators/article');
+} = require('../../validators/article');
 
 const router = new Router({
     prefix: '/api/v2'
 })
-const { getRedis, setRedis} = require('../../cache/redis')
+const { getRedis, setRedis } = require('../../cache/redis')
+const { CommentDao } = require('../../dao/comment')
 
 const REDIS_KEY_API_PREFIX = 'yongx_api'
 const AUTH_ADMIN = 16;
@@ -56,14 +57,14 @@ router.put('/article/:id', new AuthToken(AUTH_ADMIN).m, async (ctx) => {
 
 
     // 更新文章
-      // 通过验证器校验参数是否通过
-  const v = await new PositiveIdParamsValidator().validate(ctx);
+    // 通过验证器校验参数是否通过
+    const v = await new PositiveIdParamsValidator().validate(ctx);
 
-  // 获取文章ID参数
-  const id = v.get('path.id');
-  // 更新文章
-  
-    const res =await ArticleDao.update(id, v);
+    // 获取文章ID参数
+    const id = v.get('path.id');
+    // 更新文章
+
+    const res = await ArticleDao.update(id, v);
 
 
     // 返回结果
@@ -84,11 +85,11 @@ router.get('/article', async (ctx) => {
     const key = `${REDIS_KEY_API_PREFIX}_article_list_category${ctx.query.category}_page${ctx.query.page}`
     const cacheArticleData = await getRedis(key)
 
-    if(cacheArticleData){
+    if (cacheArticleData) {
         ctx.response.status = 200;
         ctx.json(cacheArticleData, '获取文章列表成功')
         //  console.log('获取缓存')
-    }else{        
+    } else {
         // 没有缓存 读取数据库
         const articleList = await ArticleDao.list(ctx.query);
         setRedis(key, articleList, 60)
@@ -104,28 +105,33 @@ router.get('/article', async (ctx) => {
  * 查询文章详情
  */
 router.get('/article/:id', async (ctx) => {
-
-    console.log(ctx.params.id)
-    // 查询文章
-    const res = await ArticleDao.detail(ctx.params.id);
-    // 获取关联此文章的评论列表
-    // const commentList = await CommentDao.targetComment({
-    //     target_id: id,
-    //     target_type: 'article'
-    // });
-    // // 更新文章浏览
-    // await ArticleDao.updateBrowse(id, ++article.browse);
-    // await article.setDataValue('article_comment', commentList);
-    // console.log(res)
-
-
-    // 返回结果
-    if (res) {
-        ctx.json(res, '获取文章详情成功')
+    // 尝试获取文章缓存
+    const key = `${REDIS_KEY_API_PREFIX}_article_detail_${ctx.params.id}`
+    const cacheArticleDetail = await getRedis(key)
+    if (cacheArticleDetail) {
+        ctx.json(cacheArticleDetail, '获取文章详情成功')
     } else {
-        ctx.response.status = 500;
-        ctx.error('获取文章详情失败')
+        const v = await new PositiveIdParamsValidator().validate(ctx);
+
+        // 获取文章ID参数
+        const id = v.get('path.id');
+        // 返回结果
+        const res = await ArticleDao.detail(id);
+
+        // 获取关联此文章的评论列表
+        const commentList = await CommentDao.CommentConnect({
+            com_id: id,
+            com_type: 'article'
+        });
+
+        // 更新文章浏览
+        await ArticleDao.updateBrowse(id, ++res.browse);
+        await res.setDataValue('article_comment', commentList);
+
+        setRedis(key, res, 60)
+        ctx.json(res, '获取文章详情成功')
     }
+
 
 })
 

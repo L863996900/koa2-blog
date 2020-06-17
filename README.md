@@ -9,6 +9,7 @@
 3.  mysql
 4.  redis
 5.  jwt
+6.  lin-validator
 
 
 #### 安装教程

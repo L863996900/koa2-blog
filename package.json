@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node bin/www",
-    "dev": "./node_modules/.bin/nodemon bin/www",
+    "dev": "nodemon bin/www",
     "prd": "pm2 start bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,5 +23,16 @@
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
-  }
+  },
+  "description": "基于koa2的个人博客，已更新至2.0版本",
+  "main": "app.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/liyongxinghahaha/Blog.git"
+  },
+  "author": "",
+  "license": "ISC"
 }

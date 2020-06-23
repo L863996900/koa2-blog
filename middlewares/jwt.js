@@ -1,6 +1,6 @@
 // token 令牌
 const jwt = require('jsonwebtoken')
-const basicAuth = require('basic-auth')
+// const basicAuth = require('basic-auth')
 //颁布令牌
 const generateToken = function (uid, scope) {
 

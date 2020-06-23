@@ -19,10 +19,17 @@ npm install // 推荐使用 yarn安装
 ```
 2.  运行：
 ```js
-// 运行1.0版本请运行
-npm run start:v1
+// 运行1.0版本
+cd ./app/v1
+
+npm run start
+//或者
+yarn start
+
 // 运行2.0版本请运行
-npm run start:v2
+npm run start 
+//或者
+yarn start
 ```
 
 #### 使用说明

@@ -33,7 +33,7 @@
   "devDependencies": {
     "nodemon": "^1.19.1"
   },
-  "description": "基于koa2的个人博客，已更新至2.0版本",
+  "description": "基于koa2的个人博客模板",
   "main": "app.js",
   "directories": {
     "lib": "lib"

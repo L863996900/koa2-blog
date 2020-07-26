@@ -7,7 +7,7 @@ const multer = require('koa-multer')
 const path = require('path')
 
 var storage = multer.diskStorage({
-    //文件保存路径
+    //文件保存绝对路径 不推荐
     // destination: function (req, file, cb) {
     //     cb(null, 'public/uploads/')
     // },
@@ -15,7 +15,7 @@ var storage = multer.diskStorage({
     destination: path.resolve('public/uploads/'),
     //修改文件名称
     filename: function (req, file, cb) {
-        var fileFormat = (file.originalname).split(".");  //以点分割成数组，数组的最后一项就是后缀名
+        var fileFormat = (file.originalname).split(".");
         cb(null, Date.now() + "." + fileFormat[fileFormat.length - 1]);
     }
 })
@@ -23,7 +23,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 router.post('/upload', upload.single('file'), async (ctx, next) => {
     ctx.body = {
-        filename: 'http://localhost:3000/uploads/' + ctx.req.file.filename//返回文件名
+        filename: 'http://localhost:3000/uploads/' + ctx.req.file.filename
     }
 })
 // const multer = require('koa-multer');//加载koa-multer模块

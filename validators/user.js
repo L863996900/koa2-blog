@@ -9,16 +9,17 @@ class RegisterValidator extends LinValidator {
     this.email = [
       new Rule('isEmail', '电子邮箱不符合规范，请输入正确的邮箱')
     ]
-    this.reg_phone = [
-      // new Rule('isLength', '用户头像不允许为空', { min: 1 })
-      new Rule(
-        'matches',
-         '手机号不符合规范，请输入正确的手机号',
-         '^[1]([3-9])[0-9]{9}$'
-         )
+    this.reg_count = [
+      new Rule('isLength', '账号至少6个字符，最多22个字符', {
+        min: 6,
+        max: 22
+      })
     ]
     this.user_picture = [
       new Rule('isLength', '用户头像不允许为空', { min: 1 })
+    ]
+    this.level = [
+      new Rule('isLength', '用户权限不允许为空', { min: 1 })
     ]
     this.password1 = [
       // 用户密码指定范围
@@ -50,10 +51,19 @@ class RegisterValidator extends LinValidator {
   }
 }
 
+class LevelEmpteFix extends LinValidator {
+  constructor() {
+    super()
+    this.level = [
+      new Rule('isLength', 'level不允许为空', { min: 1 })
+    ]
+  }
+}
+
 class UserLoginValidator extends LinValidator {
   constructor() {
     super();
-    this.reg_phone = [
+    this.reg_count = [
       new Rule(
         'matches',
          '手机号不符合规范，请输入正确的手机号',
@@ -74,6 +84,7 @@ class UserLoginValidator extends LinValidator {
     ]
   }
 }
+
 
 class TokenNotEmptyValidator extends LinValidator {
   constructor() {

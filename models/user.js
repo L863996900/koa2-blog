@@ -13,7 +13,7 @@ User.init({
         primaryKey: true,
         autoIncrement: true
     },
-    reg_phone:{
+    reg_count:{
         type: Sequelize.STRING(64),
         allowNull: false,
         comment: '用户手机号（登陆账号）'

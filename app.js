@@ -7,8 +7,10 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const InitManager = require('./core/init')
 const catchError = require('./middlewares/error')
-
+const cors = require('koa2-cors');
 onerror(app)
+app.use(cors())
+
 
 // middlewares
 app.use(bodyparser({
@@ -34,6 +36,13 @@ app.use(async (ctx, next) => {
 app.use(require('./middlewares/response'))
 InitManager.initCore(app)
 
+// cors
+// const isDev =process.env.NODE_ENV === 'development'
+// app.use(cors({
+//   origin: function (ctx) {
+//     return isDev ? '*' : '*'
+//   }
+// }));
 
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)

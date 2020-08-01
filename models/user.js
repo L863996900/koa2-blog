@@ -51,7 +51,7 @@ User.init({
         }
     },
     level: {
-        type: Sequelize.ENUM('0', '1'),
+        type: Sequelize.INTEGER,
         allowNull: false,
         comment: '用户等级'
     },

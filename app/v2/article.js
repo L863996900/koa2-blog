@@ -80,9 +80,9 @@ router.put('/article/:id', new AuthToken(AUTH_ADMIN).m, async (ctx) => {
 /**
  * 获取文章列表
  */
-router.get('/article', async (ctx) => {
+router.post('/article/list', async (ctx) => {
     // 尝试获取缓存
-    const key = `${REDIS_KEY_API_PREFIX}_article_list_category${ctx.query.category}_page${ctx.query.page}`
+    const key = `${REDIS_KEY_API_PREFIX}_article_list_category${ctx.request.body.category}_page${ctx.request.body.page}`
     const cacheArticleData = await getRedis(key)
 
     if (cacheArticleData) {
@@ -91,14 +91,14 @@ router.get('/article', async (ctx) => {
         //  console.log('获取缓存')
     } else {
         // 没有缓存 读取数据库
-        const articleList = await ArticleDao.list(ctx.query);
+        const articleList = await ArticleDao.list(ctx.request.body);
         setRedis(key, articleList, 60)
         // 设置缓存 过期时间1min 
         ctx.response.status = 200;
         ctx.json(articleList, '获取文章列表成功')
         //  console.log('请求数据库')
     }
-    console.log(global.config)
+    // console.log(global.config)
 });
 
 /**

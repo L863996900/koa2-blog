@@ -1,6 +1,9 @@
 const moment = require('moment');
 const {sequelize} = require('../core/db')
 const {Sequelize, Model} = require('sequelize')
+
+const {Category} = require('./category')
+
 // 定义文章模型
 class Article extends Model {
 
@@ -28,6 +31,11 @@ Article.init({
     allowNull: false,
     comment: '文章内容'
   },
+  cover: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    comment: '文章封面'
+  },
   description: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -38,11 +46,6 @@ Article.init({
     allowNull: false,
     defaultValue: 0,
     comment: '文章关键字'
-  },
-  category: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    comment: '文章分类'
   },
   browse: {
     type: Sequelize.INTEGER,
@@ -63,13 +66,14 @@ Article.init({
   tableName: 'article'
 })
 
-// 文章关联评论
-// Comment.hasMany(Article, {
-//   foreignKey: 'category_id', sourceKey: 'id', as: 'article'
-// })
-// Article.belongsTo(Category, {
-//   foreignKey: 'category_id', targetKey: 'id', as: 'category'
-// })
+// 文章关联分类
+Category.hasMany(Article, {
+  foreignKey: 'category', sourceKey: 'id', as: 'article'
+})
+
+Article.belongsTo(Category, {
+  foreignKey: 'category', targetKey: 'id', as: 'category_id'
+})
 
 module.exports = {
   Article

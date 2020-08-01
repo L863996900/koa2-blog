@@ -2,7 +2,7 @@ const xss = require('xss')
 const { Op } = require('sequelize')
 
 const { Article } = require('../models/article')
-
+const {Category} = require('../models/category')
 // 定义文章模型
 class ArticleDao {
 
@@ -29,6 +29,7 @@ class ArticleDao {
 
     article.title = v.get('body.title');
     article.author = v.get('body.author');
+    article.cover = v.get('body.cover');
     article.keyword = v.get('body.keyword');
     article.description = v.get('body.description');
     article.browse = v.get('body.browse');
@@ -42,7 +43,7 @@ class ArticleDao {
   }
   // 获取文章列表
   static async list(params) {
-    const { category, keyword, page = 1,pageSize = 10 } = params;
+    const { title, category, keyword, page = 1, pageSize = 10 } = params;
 
     // 筛选方式
     let filter = {
@@ -54,6 +55,9 @@ class ArticleDao {
       filter.category = category;
     }
 
+    if (title) {
+      filter.title = title;
+    }
     // 筛选方式：存在搜索关键字
     if (keyword) {
       filter.keyword = {
@@ -66,19 +70,22 @@ class ArticleDao {
       where: filter,
       order: [
         ['created_at', 'DESC']
-      ]
-      //   // 查询每篇文章下关联的分类
-      //   include: [{
-      //     model: Category,
-      //     as: 'category',
-      //     attributes: {
-      //       exclude: ['deleted_at', 'updated_at']
-      //     }
-      //   }]
+      ],
+      attributes: {
+        exclude: ['content']
+      },
+      // 查询每篇文章下关联的分类
+      include: [{
+        model: Category,
+        as: 'category_id',
+        attributes: {
+          exclude: ['deleted_at', 'updated_at']
+        }
+      }]
     });
 
     return {
-      data: article.rows,
+      list: article.rows,
       // 分页
       meta: {
         current_page: parseInt(page),
@@ -130,10 +137,11 @@ class ArticleDao {
     article.title = v.get('body.title');
     article.author = v.get('body.author');
     article.keyword = v.get('body.keyword');
+    article.cover = v.get('body.cover');
     article.description = v.get('body.description');
     article.browse = v.get('body.browse');
     article.content = xss(v.get('body.content'));
-    article.category = v.get('body.category_id');
+    article.category = v.get('body.category');
 
     article.save();
     return {
@@ -166,15 +174,15 @@ class ArticleDao {
     const article = await Article.findOne({
       where: {
         id
-      }
-      // // 查询每篇文章下关联的分类
-      // include: [{
-      //   model: Category,
-      //   as: 'category',
-      //   attributes: {
-      //     exclude: ['deleted_at', 'updated_at']
-      //   }
-      // }]
+      },
+      // 查询每篇文章下关联的分类
+      include: [{
+        model: Category,
+        as: 'category_id',
+        attributes: {
+          exclude: ['deleted_at', 'updated_at']
+        }
+      }]
     });
     if (!article) {
       return {

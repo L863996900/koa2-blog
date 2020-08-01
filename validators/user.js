@@ -18,9 +18,6 @@ class RegisterValidator extends LinValidator {
     this.user_picture = [
       new Rule('isLength', '用户头像不允许为空', { min: 1 })
     ]
-    this.level = [
-      new Rule('isLength', '用户权限不允许为空', { min: 1 })
-    ]
     this.password1 = [
       // 用户密码指定范围
       new Rule('isLength', '密码至少6个字符，最多22个字符', {

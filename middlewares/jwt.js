@@ -19,7 +19,7 @@ const generateToken = function (uid, scope) {
 
 //token 检测
 //token 传递令牌
-//HTTP 规定身份验证机制  使用HttpBasicAuth中间件
+//HTTP 规定身份验证机制 可使用HttpBasicAuth中间件
 class AuthToken {
     constructor(level) {
         this.level = level || 1;

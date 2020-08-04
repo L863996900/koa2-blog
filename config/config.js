@@ -8,7 +8,7 @@ const config = {
         password: '123456'
     },
     security: {
-        secretKey: 'devon blog',
+        secretKey: 'yongx blog',
         expiresIn: 60 * 60 *10 
     },
     port: 3000,

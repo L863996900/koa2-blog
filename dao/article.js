@@ -56,7 +56,9 @@ class ArticleDao {
     }
 
     if (title) {
-      filter.title = title;
+      filter.title = {
+        [Op.like]: `%${xss(title)}%`
+      };
     }
     // 筛选方式：存在搜索关键字
     if (keyword) {

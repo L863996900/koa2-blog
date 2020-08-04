@@ -82,7 +82,7 @@ router.put('/article/:id', new AuthToken(AUTH_ADMIN).m, async (ctx) => {
  */
 router.post('/article/list', async (ctx) => {
     // 尝试获取缓存
-    const key = `${REDIS_KEY_API_PREFIX}_article_list_category${ctx.request.body.category}_page${ctx.request.body.page}`
+    const key = `${REDIS_KEY_API_PREFIX}_article_list_title${ctx.request.body.title}_category${ctx.request.body.category}_keyword${ctx.request.body.keyword}_page${ctx.request.body.page}_pageSize${ctx.request.body.pageSize}`
     const cacheArticleData = await getRedis(key)
 
     if (cacheArticleData) {

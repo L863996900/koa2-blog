@@ -12,6 +12,7 @@ const {
 } = require('../../middlewares/jwt')
 const { getRedis, setRedis } = require('../../cache/redis')
 
+const REDIS_KEY_API_PREFIX = 'yongx_api'
 const Auth_User = 16;
 
 //注册
@@ -75,17 +76,26 @@ router.get('user', new AuthToken(Auth_User).m, async (ctx) => {
 router.post('user/list', new AuthToken(Auth_User).m, async (ctx) => {
     // 获取用户id
     try {
-        if (!ctx.auth.uid) {
-            ctx.error(ctx.auth.errMsg)
-        } else if (ctx.auth.uid) {
-            const id = ctx.auth.uid
-            let userInfo = await UserDao.detail(id)
-            if (userInfo.dataValues.level !== 0) return ctx.error("权限不足")
-            let userList = await UserDao.list(ctx.request.body)
-            // 设置缓存 过期时间1min 
+        const key = `${REDIS_KEY_API_PREFIX}_user_list${ctx.request.body.reg_count}_page${ctx.request.body.page}_pageSize${ctx.request.body.pageSize}`
+        const cacheUserListData = await getRedis(key)
+        if (cacheUserListData) {
             ctx.response.status = 200;
-            ctx.json(userList, '获取用户列表成功')
-            //  console.log('请求数据库')
+            ctx.json(cacheUserListData, '获取用户列表成功')
+            //  console.log('获取缓存')
+        } else {
+            if (!ctx.auth.uid) {
+                ctx.error(ctx.auth.errMsg)
+            } else if (ctx.auth.uid) {
+                const id = ctx.auth.uid
+                let userInfo = await UserDao.detail(id)
+                if (userInfo.dataValues.level !== 0) return ctx.error("权限不足")
+                let userList = await UserDao.list(ctx.request.body)
+                // 设置缓存 过期时间1min 
+                setRedis(key, userList, 60)
+                ctx.response.status = 200;
+                ctx.json(userList, '获取用户列表成功')
+                //  console.log('请求数据库')
+            }
         }
     } catch (e) {
         ctx.error(e)
